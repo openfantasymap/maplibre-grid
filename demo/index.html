@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>maplibre-grid demo</title>
+    <link
+      href="https://unpkg.com/maplibre-gl@4/dist/maplibre-gl.css"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        color-scheme: light dark;
+        font-family: system-ui, sans-serif;
+      }
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+      }
+      #map {
+        position: absolute;
+        inset: 0;
+      }
+      #panel {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        z-index: 1;
+        width: 230px;
+        padding: 14px 16px;
+        background: rgba(20, 22, 28, 0.86);
+        color: #f4f4f6;
+        border-radius: 10px;
+        backdrop-filter: blur(8px);
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+        font-size: 13px;
+        line-height: 1.5;
+      }
+      #panel h1 {
+        font-size: 14px;
+        margin: 0 0 10px;
+        letter-spacing: 0.02em;
+      }
+      label {
+        display: block;
+        margin: 9px 0 2px;
+        opacity: 0.8;
+      }
+      input[type='range'] {
+        width: 100%;
+      }
+      select,
+      input[type='number'] {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 4px 6px;
+        background: #2a2d36;
+        color: inherit;
+        border: 1px solid #3a3e49;
+        border-radius: 6px;
+      }
+      .hint {
+        margin-top: 12px;
+        opacity: 0.6;
+        font-size: 12px;
+      }
+      .val {
+        float: right;
+        opacity: 0.6;
+        font-variant-numeric: tabular-nums;
+      }
+      #readout {
+        margin-top: 8px;
+        font-variant-numeric: tabular-nums;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <div id="panel">
+      <h1>maplibre-grid</h1>
+
+      <label for="type">Grid type</label>
+      <select id="type">
+        <option value="square">Square</option>
+        <option value="hex">Hexagonal</option>
+      </select>
+
+      <label for="orientation">Hex orientation</label>
+      <select id="orientation">
+        <option value="flat">Flat-top</option>
+        <option value="pointy">Pointy-top</option>
+      </select>
+
+      <label for="cellSize">Cell size <span class="val" id="cellSizeVal"></span></label>
+      <input id="cellSize" type="range" min="10" max="500" step="5" value="50" />
+
+      <label for="rotation">Rotation <span class="val" id="rotationVal"></span></label>
+      <input id="rotation" type="range" min="0" max="180" step="1" value="0" />
+
+      <div class="hint">Click the map to move the grid origin (corner).</div>
+      <div id="readout">hover a cell…</div>
+    </div>
+
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>
