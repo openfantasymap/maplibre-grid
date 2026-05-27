@@ -1,37 +1,32 @@
-import maplibregl, { type StyleSpecification } from 'maplibre-gl';
+import maplibregl from 'maplibre-gl';
 import { GridLayer, type LngLat } from '../src/index';
-
-const style: StyleSpecification = {
-  version: 8,
-  sources: {
-    osm: {
-      type: 'raster',
-      tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
-      tileSize: 256,
-      attribution: '© OpenStreetMap contributors',
-    },
-  },
-  layers: [{ id: 'osm', type: 'raster', source: 'osm' }],
-};
 
 const origin: LngLat = [12.4924, 41.8902]; // Colosseum, Rome
 const map = new maplibregl.Map({
   container: 'map',
-  style,
+  // OpenFreeMap — free vector tiles, no API key. Other styles: liberty, bright, fiord.
+  style: 'https://tiles.openfreemap.org/styles/positron',
   center: origin,
-  zoom: 17,
+  zoom: 20,
+  // Hard zoom-out limit: at 1.5 m cells, anything wider than z19 would
+  // generate hundreds of thousands of polygons and kill the browser.
+  minZoom: 19,
+  maxZoom: 22,
 });
 
 const grid = new GridLayer(map, {
   type: 'square',
   origin,
-  cellSize: 50,
+  cellSize: 1.5,
   rotation: 0,
   lineColor: '#ff3b30',
   lineWidth: 1.5,
   lineOpacity: 0.8,
   fillColor: '#ff3b30',
   fillOpacity: 0.05,
+  // Smaller viewport padding + a generous cap, suitable for tiny cells.
+  padding: 0.05,
+  maxCells: 150_000,
 });
 
 map.on('load', () => grid.attach());
@@ -47,12 +42,13 @@ const rotationVal = $('rotationVal');
 const readout = $('readout');
 
 function sync() {
-  cellSizeVal.textContent = `${cellSize.value} m`;
+  const size = Number(cellSize.value);
+  cellSizeVal.textContent = `${size.toFixed(1)} m`;
   rotationVal.textContent = `${rotation.value}°`;
   grid.setOptions({
     type: typeSel.value as 'square' | 'hex',
     orientation: orientSel.value as 'flat' | 'pointy',
-    cellSize: Number(cellSize.value),
+    cellSize: size,
     rotation: Number(rotation.value),
   });
 }
