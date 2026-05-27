@@ -136,22 +136,32 @@ Release (tag `vX.Y.Z`) and the package is built and pushed to npm as
 `@openfantasymap/maplibre-grid`.
 
 The workflow uses [npm Trusted Publishing][tp] (OIDC) — no `NPM_TOKEN` secret
-is needed. One-time setup on npmjs.com (package or scope → *Settings → Trusted
-Publisher*):
+lives in this repo. One-time bootstrap for a brand-new package:
 
-| Field         | Value             |
-| ------------- | ----------------- |
-| Provider      | GitHub Actions    |
-| Organization  | `openfantasymap`  |
-| Repository    | `maplibre-grid`   |
-| Workflow      | `publish.yml`     |
-| Environment   | *(leave empty)*   |
+1. **Claim the name on npm with a placeholder** (needs a short-lived npm token):
+   ```bash
+   NPM_TOKEN=npm_xxx make publish-placeholder
+   ```
+   This uses [`setup-npm-trusted-publish`][snp] in Docker to publish a
+   minimal placeholder so the package exists on npm.
 
-For the first publish of a brand-new package, configure it as a "pending
-trusted publisher" under your npm account before running the workflow.
-Provenance attestations are emitted automatically.
+2. **Attach the Trusted Publisher** on
+   `https://www.npmjs.com/package/@openfantasymap/maplibre-grid/access`:
+
+   | Field         | Value             |
+   | ------------- | ----------------- |
+   | Provider      | GitHub Actions    |
+   | Organization  | `openfantasymap`  |
+   | Repository    | `maplibre-grid`   |
+   | Workflow      | `publish.yml`     |
+   | Environment   | *(leave empty)*   |
+
+3. **Release.** Create a GitHub Release for `vX.Y.Z` (or
+   `gh workflow run publish.yml`) — the workflow publishes via OIDC with
+   provenance and never touches a long-lived token again.
 
 [tp]: https://docs.npmjs.com/trusted-publishers
+[snp]: https://www.npmjs.com/package/setup-npm-trusted-publish
 
 ## License
 
