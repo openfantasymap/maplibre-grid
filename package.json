@@ -25,7 +25,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
-    "demo": "vite demo"
+    "demo": "vite",
+    "demo:build": "vite build"
   },
   "keywords": [
     "maplibre",
