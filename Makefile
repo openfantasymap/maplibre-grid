@@ -26,9 +26,11 @@ demo: ## Serve the interactive demo on http://localhost:5173
 publish-placeholder-dry: ## Preview the npm-trusted-publish placeholder publish (no token needed)
 	$(DOCKER) npx --yes setup-npm-trusted-publish @openfantasymap/maplibre-grid --dry-run
 
-publish-placeholder: ## Publish the placeholder to claim the npm name (requires NPM_TOKEN)
+publish-placeholder: ## Publish the placeholder to claim the npm name (NPM_TOKEN required; NPM_OTP optional if 2FA enforced)
 	@if [ -z "$$NPM_TOKEN" ]; then echo "NPM_TOKEN is required: NPM_TOKEN=npm_xxx make publish-placeholder"; exit 2; fi
-	docker run --rm -e NPM_TOKEN -v "$(CURDIR)":$(WORKDIR) -w $(WORKDIR) $(IMAGE) \
+	@echo "Tip: an npm 'Automation' token bypasses 2FA. Otherwise pass NPM_OTP=<6-digit-code>."
+	docker run --rm -e NPM_TOKEN -e NPM_CONFIG_OTP=$${NPM_OTP} \
+		-v "$(CURDIR)":$(WORKDIR) -w $(WORKDIR) $(IMAGE) \
 		npx --yes setup-npm-trusted-publish @openfantasymap/maplibre-grid
 
 clean: ## Remove build output and dependencies
