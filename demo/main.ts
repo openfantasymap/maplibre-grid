@@ -4,8 +4,8 @@ import { GridLayer, type LngLat } from '../src/index';
 const origin: LngLat = [12.4924, 41.8902]; // Colosseum, Rome
 const map = new maplibregl.Map({
   container: 'map',
-  // OpenFreeMap — free vector tiles, no API key. Other styles: liberty, bright, fiord.
-  style: 'https://tiles.openfreemap.org/styles/positron',
+  // OpenFreeMap — free vector tiles, no API key. Other styles: positron, bright, fiord.
+  style: 'https://tiles.openfreemap.org/styles/liberty',
   center: origin,
   zoom: 20,
   // Hard zoom-out limit: at 1.5 m cells, anything wider than z19 would
