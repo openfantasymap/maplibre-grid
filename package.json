@@ -1,6 +1,6 @@
 {
   "name": "@openfantasymap/maplibre-grid",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Client-side square & hexagonal VTT grid generation for MapLibre GL JS. Define a grid by cell side length, rotation and one corner position.",
   "type": "module",
   "main": "./dist/index.cjs",
