@@ -4,7 +4,7 @@
 [![CI](https://github.com/openfantasymap/maplibre-grid/actions/workflows/ci.yml/badge.svg)](https://github.com/openfantasymap/maplibre-grid/actions/workflows/ci.yml)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 
-🔗 **Live demo:** https://openfantasymap.github.io/maplibre-grid/
+🔗 **Live demo:** https://www.fantasymaps.org/maplibre-grid/
 
 Client-side generation of **VTT grids** — square and hexagonal — for
 [MapLibre GL JS](https://maplibre.org/). A grid is defined by three things:
