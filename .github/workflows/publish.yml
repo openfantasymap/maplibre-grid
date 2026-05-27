@@ -1,9 +1,17 @@
 name: Publish
 
 # Publishes @openfantasymap/maplibre-grid to npm when a GitHub Release is
-# published, or on manual dispatch. Requires the repository/org secret
-# NPM_TOKEN (an npm automation token with publish rights to the
-# @openfantasymap scope).
+# published, or on manual dispatch. Uses npm Trusted Publishing (OIDC) — no
+# NPM_TOKEN secret required.
+#
+# One-time setup on npmjs.com (package or scope → Settings → Trusted Publisher):
+#   Provider:      GitHub Actions
+#   Organization:  openfantasymap
+#   Repository:    maplibre-grid
+#   Workflow:      publish.yml
+#   Environment:   (leave empty)
+# For the first publish of a brand-new package, configure it as a "pending
+# trusted publisher" under your account before running this workflow.
 
 on:
   release:
@@ -12,7 +20,7 @@ on:
 
 permissions:
   contents: read
-  id-token: write # required for npm provenance
+  id-token: write # required for OIDC / trusted publishing + provenance
 
 jobs:
   publish:
@@ -26,6 +34,10 @@ jobs:
           registry-url: https://registry.npmjs.org
           cache: npm
 
+      # Trusted publishing requires npm CLI >= 11.5.1; Node 20 ships with npm 10.
+      - name: Upgrade npm
+        run: npm install -g npm@latest
+
       - run: npm ci
 
       - name: Type-check
@@ -37,7 +49,5 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Publish to npm
+      - name: Publish to npm (trusted publishing + provenance)
         run: npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

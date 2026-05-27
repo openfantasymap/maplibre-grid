@@ -133,8 +133,25 @@ project's Apache-2.0 license.
 
 Publishing is automated by `.github/workflows/publish.yml`: create a GitHub
 Release (tag `vX.Y.Z`) and the package is built and pushed to npm as
-`@openfantasymap/maplibre-grid`. This requires an `NPM_TOKEN` secret (an npm
-automation token with publish rights to the `@openfantasymap` scope).
+`@openfantasymap/maplibre-grid`.
+
+The workflow uses [npm Trusted Publishing][tp] (OIDC) — no `NPM_TOKEN` secret
+is needed. One-time setup on npmjs.com (package or scope → *Settings → Trusted
+Publisher*):
+
+| Field         | Value             |
+| ------------- | ----------------- |
+| Provider      | GitHub Actions    |
+| Organization  | `openfantasymap`  |
+| Repository    | `maplibre-grid`   |
+| Workflow      | `publish.yml`     |
+| Environment   | *(leave empty)*   |
+
+For the first publish of a brand-new package, configure it as a "pending
+trusted publisher" under your npm account before running the workflow.
+Provenance attestations are emitted automatically.
+
+[tp]: https://docs.npmjs.com/trusted-publishers
 
 ## License
 
